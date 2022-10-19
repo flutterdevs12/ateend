@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "664371829923",
+    "project_id": "facial-app-cb386",
+    "storage_bucket": "facial-app-cb386.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664371829923:android:edbff269b98c6a935d3316",
+        "android_client_info": {
+          "package_name": "comdf.facial_app_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "664371829923-ve7t007fr9c34brg0l01dfgvrc7o70p6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comdf.facial_app_firebase",
+            "certificate_hash": "97734da0001f778ddb041a314ee3af050799bb1e"
+          }
+        },
+        {
+          "client_id": "664371829923-nbko9p2b9m6rlp46k54m9jmuv35de7th.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuCbHTmJebjAhfXYDqqXQWAwc2-Mfi3W4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664371829923-nbko9p2b9m6rlp46k54m9jmuv35de7th.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
