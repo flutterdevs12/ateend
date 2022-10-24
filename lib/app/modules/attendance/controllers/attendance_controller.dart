@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:facial_app_firebase/app/data/attend3nce_model.dart';
 import 'package:facial_app_firebase/app/data/image_model.dart';
 import 'package:facial_app_firebase/app/data/response_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:flutter_geocoder/geocoder.dart';
 
 import 'package:get/get.dart';
 
@@ -23,6 +25,11 @@ class AttendanceController extends GetxController {
   @override
   void onClose() {}
   void increment() => count.value++;
+  @override
+  void onInit() {
+    super.onInit();
+    getLocation();
+  }
 
   File? image;
   String img = '';
@@ -39,7 +46,7 @@ class AttendanceController extends GetxController {
     update();
   }
 
-  String scannedQrcode = '';
+  String scannedQrcode = 'sdfg';
   clearQr() {
     scannedQrcode = '';
     update();
@@ -63,34 +70,60 @@ class AttendanceController extends GetxController {
     update();
   }
 
-  getUserLocation() async {
-    //call this async method from whereever you need
+  // getUserLocation() async {
+  //   //call this async method from whereever you need
 
-    LocationData? myLocation;
-    String error;
+  //   LocationData? myLocation;
+  //   String error;
+  //   Location location = Location();
+  //   try {
+  //     myLocation = await location.getLocation();
+  //   } on PlatformException catch (e) {
+  //     if (e.code == 'PERMISSION_DENIED') {
+  //       error = 'please grant permission';
+  //       print(error);
+  //     }
+  //     if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
+  //       error = 'permission denied- please enable it from app settings';
+  //       print(error);
+  //     }
+  //     myLocation = null;
+  //   }
+  //   var currentLocation = myLocation;
+  //   final coordinates = Coordinates(myLocation!.latitude, myLocation.longitude);
+  //   var addresses =
+  //       await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  //   var first = addresses.first;
+  //   log(first.toString());
+  //   log(first.locality.toString());
+  //   log(' ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
+  //   return first;
+  // }
+  LocationData? locationData;
+  getLocation() async {
     Location location = Location();
-    try {
-      myLocation = await location.getLocation();
-    } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {
-        error = 'please grant permission';
-        print(error);
+
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return;
       }
-      if (e.code == 'PERMISSION_DENIED_NEVER_ASK') {
-        error = 'permission denied- please enable it from app settings';
-        print(error);
-      }
-      myLocation = null;
     }
-    var currentLocation = myLocation;
-    final coordinates = Coordinates(myLocation!.latitude, myLocation.longitude);
-    var addresses =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    log(first.toString());
-    log(first.locality.toString());
-    log(' ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
-    return first;
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return;
+      }
+    }
+
+    locationData = await location.getLocation();
+    log(locationData.toString());
   }
 
   var baseUrl = 'https://face-verification2.p.rapidapi.com/faceverification';
@@ -128,5 +161,27 @@ class AttendanceController extends GetxController {
       col1 = Color.fromARGB(255, 93, 92, 92);
     }
     update();
+  }
+
+  takeAttendandce(data) async {
+    String loc = (locationData!.latitude!.toString() +
+        locationData!.longitude.toString());
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    final AttendanceModel attendanceModel = AttendanceModel();
+    attendanceModel.email = data['email'];
+    attendanceModel.image = img;
+    attendanceModel.location = loc;
+    attendanceModel.name = data['Name'];
+    attendanceModel.number = data['Number'];
+    attendanceModel.uid = data['uid'];
+    attendanceModel.qr = scannedQrcode;
+    attendanceModel.s = Timestamp.now();
+    await firebaseFirestore
+        .collection("Attendence")
+        .doc(data['uid'])
+        .set(attendanceModel.toMap());
+    print('data uploaded');
+    Get.snackbar('Alert', 'Attendence Taken Succesfully',
+        snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
   }
 }

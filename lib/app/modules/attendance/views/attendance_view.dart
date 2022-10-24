@@ -9,12 +9,14 @@ import '../controllers/attendance_controller.dart';
 class AttendanceView extends GetView<AttendanceController> {
   final image;
   final address;
+  final allData;
   final _attendaceController = Get.put(AttendanceController());
-  AttendanceView({this.image, this.address});
+  AttendanceView({this.image, this.address, this.allData});
   @override
   Widget build(BuildContext context) {
     _attendaceController.img1 = Image.asset('assets/images/avatar.png');
     var newImage = Base64Decoder().convert(image);
+
     dynamic req;
     return Scaffold(
         appBar: AppBar(
@@ -134,7 +136,7 @@ class AttendanceView extends GetView<AttendanceController> {
               }),
               ElevatedButton(
                   onPressed: () {
-                    _attendaceController.clearQr();
+                    _attendaceController.takeAttendandce(allData);
                   },
                   child: Text('Submit')),
               // Text(

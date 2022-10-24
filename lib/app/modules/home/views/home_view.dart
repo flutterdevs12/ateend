@@ -202,10 +202,11 @@ class HomeView extends GetView<HomeController> {
                               ),
                             ),
                             onPressed: () async {
-                              var s = await _attcont.getUserLocation();
+                              var s = await _attcont.getLocation();
                               Get.to(AttendanceView(
                                 image: dataq,
                                 address: s,
+                                allData: data,
                               ));
                               // Get.to(attend(
                               //   images: images2,

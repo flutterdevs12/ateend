@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:facial_app_firebase/app/modules/authenticator/views/authenticator_view.dart';
-import 'package:facial_app_firebase/app/modules/sign_up/views/widget/sign_up_model.dart';
+import 'package:facial_app_firebase/app/data/sign_up_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
