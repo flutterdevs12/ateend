@@ -10,6 +10,7 @@ class SignInController extends GetxController {
   @override
   void onClose() {}
   void increment() => count.value++;
+  bool isLoading = true;
   Future loginFunct({required String email, required String password}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;

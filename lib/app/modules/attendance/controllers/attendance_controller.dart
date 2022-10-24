@@ -1,133 +1,42 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:facial_app_firebase/app/data/image_model.dart';
+import 'package:facial_app_firebase/app/data/response_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_geocoder/geocoder.dart';
 
 import 'package:get/get.dart';
-import 'package:flutter_face_api_beta/face_api.dart' as regula;
-import 'package:image_picker/image_picker.dart';
-import 'dart:io' as io;
 
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
 
 class AttendanceController extends GetxController {
   //TODO: Implement AttendanceController
-
+  dynamic img1;
+  Color col1 = Color.fromARGB(255, 93, 92, 92);
   final count = 0.obs;
 
   @override
   void onClose() {}
   void increment() => count.value++;
-  @override
-  void onInit() {
-    super.onInit();
-    getUserLocation();
-  }
-  // File? image;
-  // String img = '';
-  // pickimage() async {
-  //   final pimage = await ImagePicker().pickImage(source: ImageSource.camera);
-  //   if (pimage == null) {
-  //     return;
-  //   } else {
-  //     image = File(pimage.path);
 
-  //     final bytes = File(pimage.path).readAsBytesSync();
-  //     img = base64Encode(bytes);
-  //   }
-  //   update();
-  // }
-  String _similarity = "nil";
-  var img1;
-  var image1 = regula.MatchFacesImage();
-  var image2 = regula.MatchFacesImage();
-  var img2;
-  setImage(bool first, imageFile, int type) {
-    if (imageFile == null) return;
-
-    _similarity = "nil";
-
-    if (first) {
-      image1.bitmap = base64Encode(imageFile);
-      image1.imageType = type;
-
-      img1 = Image.memory(imageFile);
-      update();
-      // _liveness = "nil";
+  File? image;
+  String img = '';
+  pickimage() async {
+    final pimage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pimage == null) {
+      return;
     } else {
-      image2.bitmap = base64Encode(img2);
-      image2.imageType = type;
-      _similarity = "nil";
-      update();
+      image = File(pimage.path);
+
+      final bytes = File(pimage.path).readAsBytesSync();
+      img = base64Encode(bytes);
     }
-
-    //  else {
-    //   image2.bitmap = base64Encode(imageFile);
-    //   image2.imageType = type;
-
-    //   img2 = Image.memory(imageFile);
-    //   update();
-    // }
-  }
-
-  Widget createImage(image, VoidCallback onPress) {
-    return Material(
-        child: InkWell(
-      onTap: onPress,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20.0),
-        child: Image(height: 150, width: 150, image: image),
-      ),
-    ));
-  }
-
-  pickImage(BuildContext context, bool first) async {
-    // await regula.FaceSDK.presentFaceCaptureActivity().then((result) {
-    //   setImage(
-    //       first,
-    //       base64Decode(regula.FaceCaptureResponse.fromJson(json.decode(result))!
-    //           .image!
-    //           .bitmap!
-    //           .replaceAll("\n", "")),
-    //       regula.ImageType.LIVE);
-    // });
-    ImagePicker().pickImage(source: ImageSource.gallery).then((value) {
-      return setImage(first, io.File(value!.path).readAsBytesSync(),
-          regula.ImageType.PRINTED);
-    });
-    matchFaces();
-    log(_similarity.toString());
-  }
-
-  matchFaces() {
-    if (image1.bitmap == null ||
-        image1.bitmap == "" ||
-        image2.bitmap == null ||
-        image2.bitmap == "") return;
-    // image2 = img2;
-
-    _similarity = "Processing...";
     update();
-    var request = regula.MatchFacesRequest();
-    request.images = [image1, image2];
-    regula.FaceSDK.matchFaces(jsonEncode(request)).then((value) {
-      var response = regula.MatchFacesResponse.fromJson(json.decode(value));
-      regula.FaceSDK.matchFacesSimilarityThresholdSplit(
-              jsonEncode(response!.results), 0.75)
-          .then((str) {
-        var split = regula.MatchFacesSimilarityThresholdSplit.fromJson(
-            json.decode(str));
-
-        _similarity = split!.matchedFaces.isNotEmpty
-            ? ("${(split.matchedFaces[0]!.similarity! * 100).toStringAsFixed(2)}%")
-            : "error";
-      });
-      log(_similarity);
-      update();
-    });
   }
 
   String scannedQrcode = '';
@@ -150,6 +59,7 @@ class AttendanceController extends GetxController {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     // if (!mounted) return;
+
     update();
   }
 
@@ -181,5 +91,42 @@ class AttendanceController extends GetxController {
     log(first.locality.toString());
     log(' ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare}');
     return first;
+  }
+
+  var baseUrl = 'https://face-verification2.p.rapidapi.com/faceverification';
+  List<ResponseModel> latestResponse = [];
+  ResponseModel? latestResponse2;
+
+  Future<void> checkImages(String img2) async {
+    try {
+      final ImageModel imageModel = ImageModel(
+          image1Base64: 'data:image/jpeg;base64,$img',
+          image2Base64: 'data:image/jpeg;base64,$img2');
+      var request = await http.post(
+          Uri.parse(
+              'https://face-verification2.p.rapidapi.com/faceverification'),
+          body: imageModel.toJson(),
+          headers: {
+            "X-RapidAPI-Key":
+                "1e4980514fmshb613bff4e0ca23ap187e06jsn90b913b01a8c",
+            // "X-RapidAPI-Host": "face-verification2.p.rapidapi.com",
+          });
+
+      dynamic result = jsonDecode(request.body);
+      log(result.toString());
+      latestResponse2 = responseModelFromJson(request.body);
+      latestResponse.add(latestResponse2!);
+      log(latestResponse2!.data.toString());
+    } catch (e) {
+      log(e.toString());
+    }
+    if (latestResponse2!.data!.similarPercent != 0) {
+      col1 = Color.fromARGB(255, 15, 211, 35);
+    } else {
+      Get.snackbar("Error", 'Photo does not match',
+          backgroundColor: Color.fromARGB(255, 211, 15, 15));
+      col1 = Color.fromARGB(255, 93, 92, 92);
+    }
+    update();
   }
 }

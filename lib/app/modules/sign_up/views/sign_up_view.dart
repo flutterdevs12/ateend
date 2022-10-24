@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:facial_app_firebase/app/modules/attendance/controllers/attendance_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -203,7 +204,9 @@ class SignUpView extends GetView<SignUpController> {
                       onPressed: () async {
                         await _signUpController.signUp(
                             _signUpController.emailEditingController.text,
-                            _signUpController.passwordController.text);
+                            _signUpController.passwordController.text,
+                            context);
+                        await AttendanceController().getUserLocation();
                       },
                       child: const Text('Sign-up'),
                     ),
