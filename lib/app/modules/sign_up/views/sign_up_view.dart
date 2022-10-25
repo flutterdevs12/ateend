@@ -194,21 +194,32 @@ class SignUpView extends GetView<SignUpController> {
                         )),
                       ),
                     ),
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromARGB(255, 50, 67, 73),
+                    Obx(() {
+                      return ElevatedButton.icon(
+                        icon: _signUpController.isLoading.value
+                            ? CircularProgressIndicator()
+                            : Icon(Icons.upload),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                            Color.fromARGB(255, 50, 67, 73),
+                          ),
                         ),
-                      ),
-                      onPressed: () async {
-                        await _signUpController.signUp(
-                            _signUpController.emailEditingController.text,
-                            _signUpController.passwordController.text,
-                            context);
-                        // await AttendanceController().getUserLocation();
-                      },
-                      child: const Text('Sign-up'),
-                    ),
+                        onPressed: _signUpController.isLoading.value
+                            ? null
+                            : () async {
+                                await _signUpController.uploadFile();
+                                await _signUpController.signUp(
+                                    _signUpController
+                                        .emailEditingController.text,
+                                    _signUpController.passwordController.text,
+                                    context);
+                                // await AttendanceController().getUserLocation();
+                              },
+                        label: Text(_signUpController.isLoading.value
+                            ? 'Processing'
+                            : 'Sign-up'),
+                      );
+                    })
                   ],
                 ),
               )

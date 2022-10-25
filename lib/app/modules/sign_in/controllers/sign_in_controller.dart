@@ -10,10 +10,19 @@ class SignInController extends GetxController {
   @override
   void onClose() {}
   void increment() => count.value++;
-  bool isLoading = true;
+  var isLoading = false.obs;
+
+  uploadFile() async {
+    isLoading.value = true;
+    await Future.delayed(Duration(seconds: 5));
+    isLoading.value = false;
+  }
+
   Future loginFunct({required String email, required String password}) async {
+    await uploadFile();
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
+
     try {
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);

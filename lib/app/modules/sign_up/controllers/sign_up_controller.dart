@@ -25,17 +25,17 @@ class SignUpController extends GetxController {
   final numberController = TextEditingController();
   final auth = FirebaseAuth.instance;
   final formKey = GlobalKey<FormState>();
-  bool isLoading = true;
+
+  var isLoading = false.obs;
+
+  uploadFile() async {
+    isLoading.value = true;
+    await Future.delayed(Duration(seconds: 3));
+    isLoading.value = false;
+  }
+
   signUp(String email, String password, context) async {
     try {
-      if (isLoading == true) {
-        Column(
-          children: [
-            Center(child: CircularProgressIndicator()),
-          ],
-        );
-      }
-
       if (formKey.currentState!.validate()) {
         await auth
             .createUserWithEmailAndPassword(email: email, password: password)
@@ -45,7 +45,6 @@ class SignUpController extends GetxController {
               snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
         });
       }
-      isLoading == false;
     } catch (e) {
       Get.snackbar('Alert', e.toString(),
           snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
@@ -70,7 +69,11 @@ class SignUpController extends GetxController {
     print('data uploaded');
     Get.snackbar('Alert', 'Account Succesfully created',
         snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
-
+    firstNameEditingController.clear();
+    img = '';
+    passwordController.clear();
+    numberController.clear();
+    emailEditingController.clear();
     // image = null;
     // emailEditingController.clear();
     Get.off(AuthenticatorView());

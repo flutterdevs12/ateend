@@ -163,12 +163,14 @@ class AttendanceController extends GetxController {
     update();
   }
 
-  takeAttendandce(data) async {
-    String loc = (locationData!.latitude!.toString() +
-        locationData!.longitude.toString());
+  takeAttendandce(data, context) async {
+    var l2 = locationData!.latitude;
+    var l1 = locationData!.longitude;
+    var loc = ("latitude: $l1,longitude:$l2");
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     final AttendanceModel attendanceModel = AttendanceModel();
     attendanceModel.email = data['email'];
+
     attendanceModel.image = img;
     attendanceModel.location = loc;
     attendanceModel.name = data['Name'];
@@ -183,5 +185,14 @@ class AttendanceController extends GetxController {
     print('data uploaded');
     Get.snackbar('Alert', 'Attendence Taken Succesfully',
         snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
+    await afterFunct();
+    Navigator.of(context).pop();
+  }
+
+  afterFunct() {
+    col1 = Color.fromARGB(255, 93, 92, 92);
+    img = '';
+    scannedQrcode = '';
+    update;
   }
 }

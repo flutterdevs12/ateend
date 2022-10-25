@@ -114,35 +114,46 @@ class SignInView extends GetView<SignInController> {
                               child: const Text('Dont have an account?'))
                         ],
                       ),
-                      ElevatedButton(
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          )),
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                            Color.fromARGB(255, 50, 67, 73),
+                      Obx(() {
+                        return ElevatedButton.icon(
+                          icon: _signInController.isLoading.value
+                              ? CircularProgressIndicator()
+                              : Icon(Icons.login),
+                          style: ButtonStyle(
+                            minimumSize:
+                                MaterialStateProperty.all(Size(100, 50)),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            )),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromARGB(255, 50, 67, 73),
+                            ),
                           ),
-                        ),
-                        onPressed: () async {
-                          await _signInController.loginFunct(
-                            email: _emailcontroller.text,
-                            password: _passwordcontroller.text,
-                          );
-                          // if (user != null) {
-                          //   Get.off(DataViewView());
-                          // }
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 30),
-                          child: Text(
-                            'Login',
-                            style: GoogleFonts.ubuntu(
-                                color: Color.fromARGB(255, 255, 255, 255)),
+                          onPressed: _signInController.isLoading.value
+                              ? null
+                              : () async {
+                                  await _signInController.loginFunct(
+                                    email: _emailcontroller.text,
+                                    password: _passwordcontroller.text,
+                                  );
+
+                                  // if (user != null) {
+                                  //   Get.off(DataViewView());
+                                  // }
+                                },
+                          label: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 30),
+                            child: Text(
+                              _signInController.isLoading.value
+                                  ? 'Processing'
+                                  : 'Login',
+                              style: GoogleFonts.ubuntu(
+                                  color: Color.fromARGB(255, 255, 255, 255)),
+                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      })
                     ],
                   ),
                 )
