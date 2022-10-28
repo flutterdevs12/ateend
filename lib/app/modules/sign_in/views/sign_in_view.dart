@@ -15,7 +15,7 @@ class SignInView extends GetView<SignInController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 67, 70, 71),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
@@ -28,6 +28,7 @@ class SignInView extends GetView<SignInController> {
                       fontWeight: FontWeight.bold),
                 ),
                 Container(
+                  height: MediaQuery.of(context).size.height / 2.3,
                   child: Lottie.network(
                       'https://assets2.lottiefiles.com/packages/lf20_pwwZiL9I3Y.json'),
                 ),
@@ -38,7 +39,11 @@ class SignInView extends GetView<SignInController> {
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 15.0, right: 15, bottom: 25),
-                        child: Container(
+                        child: Card(
+                          elevation: 20,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                           child: (TextFormField(
                             style: GoogleFonts.ubuntu(color: Colors.white),
                             controller: _emailcontroller,
@@ -48,7 +53,7 @@ class SignInView extends GetView<SignInController> {
                                 filled: true,
                                 prefixIcon: const Icon(
                                   Icons.email_outlined,
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Color.fromARGB(255, 165, 169, 171),
                                 ),
                                 hintText: 'Enter your  e-mail',
                                 focusedBorder: OutlineInputBorder(
@@ -56,10 +61,10 @@ class SignInView extends GetView<SignInController> {
                                         width: 2,
                                         color:
                                             Color.fromARGB(255, 127, 127, 129)),
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(10)),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                fillColor: Color.fromARGB(255, 67, 70, 71),
+                                    borderRadius: BorderRadius.circular(10)),
+                                fillColor: Color.fromARGB(255, 45, 47, 51),
                                 focusColor: Color.fromARGB(255, 255, 255, 255)),
                             validator: (value) {
                               if (!RegExp(r'^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$')
@@ -75,7 +80,10 @@ class SignInView extends GetView<SignInController> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 15.0, right: 15),
-                        child: Container(
+                        child: Card(
+                          elevation: 20,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
                           child: (TextFormField(
                             style: GoogleFonts.ubuntu(color: Colors.white),
                             controller: _passwordcontroller,
@@ -86,20 +94,20 @@ class SignInView extends GetView<SignInController> {
                                 filled: true,
                                 prefixIcon: const Icon(
                                   Icons.password,
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Color.fromARGB(255, 165, 169, 171),
                                 ),
                                 hintText: 'Password',
                                 hintStyle: GoogleFonts.ubuntu(
                                     color: Color.fromARGB(255, 255, 255, 255)),
                                 border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
+                                    borderRadius: BorderRadius.circular(10)),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         width: 2,
                                         color:
                                             Color.fromARGB(255, 127, 127, 129)),
-                                    borderRadius: BorderRadius.circular(20)),
-                                fillColor: Color.fromARGB(255, 67, 70, 71),
+                                    borderRadius: BorderRadius.circular(10)),
+                                fillColor: Color.fromARGB(255, 45, 47, 51),
                                 focusColor: Color.fromARGB(255, 255, 255, 255)),
                           )),
                         ),
@@ -121,6 +129,7 @@ class SignInView extends GetView<SignInController> {
                                   color: Color.fromARGB(255, 171, 180, 184))
                               : Icon(Icons.login),
                           style: ButtonStyle(
+                            elevation: MaterialStateProperty.all(20),
                             minimumSize:
                                 MaterialStateProperty.all(Size(100, 50)),
                             shape: MaterialStateProperty.all<
@@ -128,7 +137,7 @@ class SignInView extends GetView<SignInController> {
                               borderRadius: BorderRadius.circular(15),
                             )),
                             backgroundColor: MaterialStateProperty.all<Color>(
-                              Color.fromARGB(255, 50, 67, 73),
+                              Color.fromARGB(255, 65, 86, 94),
                             ),
                           ),
                           onPressed: _signInController.isLoading.value

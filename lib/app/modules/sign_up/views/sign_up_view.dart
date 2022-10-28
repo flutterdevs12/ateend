@@ -19,9 +19,9 @@ class SignUpView extends GetView<SignUpController> {
                 Get.off(SignInView());
               },
               icon: (Icon(Icons.arrow_back))),
-          backgroundColor: Colors.black,
+          backgroundColor: Color.fromARGB(255, 67, 70, 71),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 67, 70, 71),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -82,34 +82,37 @@ class SignUpView extends GetView<SignUpController> {
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 15.0, right: 15, bottom: 20),
-                      child: Container(
-                        child: (TextFormField(
-                          style: GoogleFonts.ubuntu(color: Colors.white),
-                          controller:
-                              _signUpController.firstNameEditingController,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(
-                                Icons.abc,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
-                              hintText: 'Enter Your Name',
-                              hintStyle: GoogleFonts.ubuntu(
-                                  color: Color.fromARGB(255, 255, 255, 255)),
-                              filled: true,
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              fillColor: Color.fromARGB(255, 67, 70, 71),
-                              focusColor: Color.fromARGB(255, 67, 70, 71)),
-                          validator: (value) {
-                            if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value!) ||
-                                value.length < 3) {
-                              return 'please enter valid Name';
-                            } else {
-                              return null;
-                            }
-                          },
-                        )),
-                      ),
+                      child: (TextFormField(
+                        style: GoogleFonts.ubuntu(color: Colors.white),
+                        controller:
+                            _signUpController.firstNameEditingController,
+                        decoration: InputDecoration(
+                            prefixIcon: const Icon(
+                              Icons.abc,
+                              color: Color.fromARGB(255, 165, 169, 171),
+                            ),
+                            hintText: 'Enter Your Name',
+                            hintStyle: GoogleFonts.ubuntu(
+                                color: Color.fromARGB(255, 255, 255, 255)),
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    width: 2,
+                                    color: Color.fromARGB(255, 127, 127, 129)),
+                                borderRadius: BorderRadius.circular(10)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            fillColor: Color.fromARGB(255, 45, 47, 51),
+                            focusColor: Color.fromARGB(255, 67, 70, 71)),
+                        validator: (value) {
+                          if (!RegExp(r'^[a-z A-Z]+$').hasMatch(value!) ||
+                              value.length < 3) {
+                            return 'please enter valid Name';
+                          } else {
+                            return null;
+                          }
+                        },
+                      )),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
@@ -122,15 +125,21 @@ class SignUpView extends GetView<SignUpController> {
                           decoration: InputDecoration(
                               prefixIcon: const Icon(
                                 Icons.phone,
-                                color: Color.fromARGB(255, 0, 0, 0),
+                                color: Color.fromARGB(255, 165, 169, 171),
                               ),
                               filled: true,
                               hintText: 'Mobile Number',
                               hintStyle: GoogleFonts.ubuntu(
                                   color: Color.fromARGB(255, 255, 255, 255)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color:
+                                          Color.fromARGB(255, 127, 127, 129)),
+                                  borderRadius: BorderRadius.circular(10)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              fillColor: Color.fromARGB(255, 67, 70, 71),
+                                  borderRadius: BorderRadius.circular(10)),
+                              fillColor: Color.fromARGB(255, 45, 47, 51),
                               focusColor: Color.fromARGB(255, 67, 70, 71)),
                           validator: (value) {
                             if (!RegExp(r'^[0-9]{10}$').hasMatch(value!)) {
@@ -152,15 +161,21 @@ class SignUpView extends GetView<SignUpController> {
                           decoration: InputDecoration(
                               prefixIcon: const Icon(
                                 Icons.email_outlined,
-                                color: Color.fromARGB(255, 0, 0, 0),
+                                color: Color.fromARGB(255, 165, 169, 171),
                               ),
                               filled: true,
                               hintText: 'Enter your  e-mail',
                               hintStyle: GoogleFonts.ubuntu(
                                   color: Color.fromARGB(255, 255, 255, 255)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color:
+                                          Color.fromARGB(255, 127, 127, 129)),
+                                  borderRadius: BorderRadius.circular(10)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              fillColor: Color.fromARGB(255, 67, 70, 71),
+                                  borderRadius: BorderRadius.circular(10)),
+                              fillColor: Color.fromARGB(255, 45, 47, 51),
                               focusColor: Color.fromARGB(255, 67, 70, 71)),
                           validator: (value) {
                             if (!RegExp(r'^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$')
@@ -187,15 +202,21 @@ class SignUpView extends GetView<SignUpController> {
                           decoration: InputDecoration(
                               prefixIcon: const Icon(
                                 Icons.password,
-                                color: Color.fromARGB(255, 0, 0, 0),
+                                color: Color.fromARGB(255, 165, 169, 171),
                               ),
                               filled: true,
                               hintText: 'Password',
                               hintStyle: GoogleFonts.ubuntu(
                                   color: Color.fromARGB(255, 255, 255, 255)),
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color:
+                                          Color.fromARGB(255, 127, 127, 129)),
+                                  borderRadius: BorderRadius.circular(10)),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              fillColor: Color.fromARGB(255, 67, 70, 71),
+                                  borderRadius: BorderRadius.circular(10)),
+                              fillColor: Color.fromARGB(255, 45, 47, 51),
                               focusColor: Color.fromARGB(255, 67, 70, 71)),
                         )),
                       ),
