@@ -14,16 +14,18 @@ class SignInController extends GetxController {
 
   uploadFile() async {
     isLoading.value = true;
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(Duration(seconds: 3));
     isLoading.value = false;
   }
 
   Future loginFunct({required String email, required String password}) async {
-    await uploadFile();
+    // await uploadFile();
+
     FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
 
     try {
+      isLoading.value = true;
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       user = userCredential.user;
@@ -31,7 +33,7 @@ class SignInController extends GetxController {
       Get.snackbar("Error", e.message.toString(),
           backgroundColor: Colors.red, colorText: Colors.white);
     }
-
+    isLoading.value = false;
     // if (user != null) {
     //   Get.off(HomeView());
     // }

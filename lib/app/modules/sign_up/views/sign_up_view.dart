@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../sign_in/views/sign_in_view.dart';
 import '../controllers/sign_up_controller.dart';
 
 class SignUpView extends GetView<SignUpController> {
@@ -13,6 +14,11 @@ class SignUpView extends GetView<SignUpController> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Get.off(SignInView());
+              },
+              icon: (Icon(Icons.arrow_back))),
           backgroundColor: Colors.black,
         ),
         backgroundColor: Colors.black,
@@ -197,9 +203,11 @@ class SignUpView extends GetView<SignUpController> {
                     Obx(() {
                       return ElevatedButton.icon(
                         icon: _signUpController.isLoading.value
-                            ? CircularProgressIndicator()
+                            ? CircularProgressIndicator(
+                                color: Color.fromARGB(255, 171, 180, 184))
                             : Icon(Icons.upload),
                         style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.all(Size(150, 50)),
                           backgroundColor: MaterialStateProperty.all<Color>(
                             Color.fromARGB(255, 50, 67, 73),
                           ),
@@ -207,7 +215,6 @@ class SignUpView extends GetView<SignUpController> {
                         onPressed: _signUpController.isLoading.value
                             ? null
                             : () async {
-                                await _signUpController.uploadFile();
                                 await _signUpController.signUp(
                                     _signUpController
                                         .emailEditingController.text,
@@ -215,9 +222,13 @@ class SignUpView extends GetView<SignUpController> {
                                     context);
                                 // await AttendanceController().getUserLocation();
                               },
-                        label: Text(_signUpController.isLoading.value
-                            ? 'Processing'
-                            : 'Sign-up'),
+                        label: Text(
+                            _signUpController.isLoading.value
+                                ? 'Processing'
+                                : 'Sign-up',
+                            style: GoogleFonts.ubuntu(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
                       );
                     })
                   ],

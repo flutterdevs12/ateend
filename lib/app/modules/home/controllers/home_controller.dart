@@ -12,6 +12,12 @@ class HomeController extends GetxController {
   @override
   void onClose() {}
   void increment() => count.value++;
+  var isLoading = false.obs;
+  uploadFile() async {
+    isLoading.value = true;
+    await Future.delayed(Duration(seconds: 1));
+    isLoading.value = false;
+  }
 
   logout() async {
     Get.defaultDialog(
@@ -24,7 +30,7 @@ class HomeController extends GetxController {
             GoogleFonts.ubuntu(fontSize: 20, fontWeight: FontWeight.bold),
         textConfirm: 'Yes',
         textCancel: 'No',
-        cancelTextColor: Colors.black,
+        cancelTextColor: Color.fromARGB(255, 67, 70, 71),
         onConfirm: () async {
           FirebaseAuth auth = FirebaseAuth.instance;
           await auth.signOut();
@@ -34,7 +40,7 @@ class HomeController extends GetxController {
         onCancel: () {
           Get.off(HomeView());
         },
-        buttonColor: Color.fromARGB(255, 0, 0, 0),
+        buttonColor: Color.fromARGB(255, 67, 70, 71),
         confirmTextColor: Colors.white);
   }
 }

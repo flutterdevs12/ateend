@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:facial_app_firebase/app/modules/authenticator/views/authenticator_view.dart';
 import 'package:facial_app_firebase/app/data/sign_up_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../authenticator/views/authenticator_view.dart';
 
 class SignUpController extends GetxController {
   //TODO: Implement SignUpController
@@ -35,6 +36,7 @@ class SignUpController extends GetxController {
   }
 
   signUp(String email, String password, context) async {
+    isLoading.value = true;
     try {
       if (formKey.currentState!.validate()) {
         await auth
@@ -49,9 +51,11 @@ class SignUpController extends GetxController {
       Get.snackbar('Alert', e.toString(),
           snackPosition: SnackPosition.TOP, backgroundColor: Colors.red);
     }
+    isLoading.value = false;
   }
 
   postDetails() async {
+    // await uploadFile();
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = auth.currentUser;
     SignUpModelView dataModel = SignUpModelView();

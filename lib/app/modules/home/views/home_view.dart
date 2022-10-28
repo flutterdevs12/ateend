@@ -19,13 +19,13 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Color.fromARGB(255, 67, 70, 71),
       appBar: AppBar(
         title: Text(
           'Profile-Details',
           style: GoogleFonts.ubuntu(fontSize: 30),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Color.fromARGB(255, 67, 70, 71),
         centerTitle: true,
         actions: [
           IconButton(
@@ -45,7 +45,8 @@ class HomeView extends GetView<HomeController> {
                   (BuildContext ctx, AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (!snapshot.hasData) {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                        color: Color.fromARGB(255, 171, 180, 184)),
                   );
                 }
                 final List usersData = [];
@@ -186,38 +187,51 @@ class HomeView extends GetView<HomeController> {
                         color: Colors.white,
                         thickness: 1,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30.0),
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                              minimumSize:
-                                  MaterialStateProperty.all(Size(250, 50)),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              )),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                Color.fromARGB(255, 50, 67, 73),
+                      Obx(() {
+                        return Padding(
+                          padding: EdgeInsets.only(top: 30.0),
+                          child: ElevatedButton.icon(
+                              icon: _homeController.isLoading.value
+                                  ? CircularProgressIndicator(
+                                      color: Color.fromARGB(255, 171, 180, 184),
+                                    )
+                                  : Icon(Icons.perm_contact_calendar_rounded),
+                              style: ButtonStyle(
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(250, 50)),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  Color.fromARGB(255, 65, 86, 94),
+                                ),
                               ),
-                            ),
-                            onPressed: () async {
-                              var s = await _attcont.getLocation();
-                              Get.to(AttendanceView(
-                                image: dataq,
-                                address: s,
-                                allData: data,
-                              ));
-                              // Get.to(attend(
-                              //   images: images2,
-                              // ));
-                            },
-                            child: Text(
-                              'Take Attendance',
-                              style: GoogleFonts.ubuntu(
-                                  color: Colors.white, fontSize: 20),
-                            )),
-                      )
+                              onPressed: _homeController.isLoading.value
+                                  ? null
+                                  : () async {
+                                      await _homeController.uploadFile();
+                                      var s = await _attcont.getLocation();
+                                      Get.to(AttendanceView(
+                                        image: dataq,
+                                        address: s,
+                                        allData: data,
+                                      ));
+                                      // Get.to(attend(
+                                      //   images: images2,
+                                      // ));
+                                    },
+                              label: Text(
+                                _homeController.isLoading.value
+                                    ? 'Processing'
+                                    : 'Take Attendance',
+                                style: GoogleFonts.ubuntu(
+                                    color: Colors.white, fontSize: 20),
+                              )),
+                        );
+                      })
                     ],
                   ),
                 );

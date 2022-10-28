@@ -109,7 +109,7 @@ class SignInView extends GetView<SignInController> {
                         children: [
                           TextButton(
                               onPressed: () {
-                                Get.to(SignUpView());
+                                Get.off(SignUpView());
                               },
                               child: const Text('Dont have an account?'))
                         ],
@@ -117,7 +117,8 @@ class SignInView extends GetView<SignInController> {
                       Obx(() {
                         return ElevatedButton.icon(
                           icon: _signInController.isLoading.value
-                              ? CircularProgressIndicator()
+                              ? CircularProgressIndicator(
+                                  color: Color.fromARGB(255, 171, 180, 184))
                               : Icon(Icons.login),
                           style: ButtonStyle(
                             minimumSize:

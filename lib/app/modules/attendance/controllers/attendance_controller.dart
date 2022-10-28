@@ -169,6 +169,9 @@ class AttendanceController extends GetxController {
     var loc = ("latitude: $l1,longitude:$l2");
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     final AttendanceModel attendanceModel = AttendanceModel();
+    var date = DateTime.now();
+    var current =
+        DateTime(date.year, date.month, date.day, date.hour, date.minute);
     attendanceModel.email = data['email'];
 
     attendanceModel.image = img;
@@ -178,9 +181,11 @@ class AttendanceController extends GetxController {
     attendanceModel.uid = data['uid'];
     attendanceModel.qr = scannedQrcode;
     attendanceModel.s = Timestamp.now();
-    await firebaseFirestore
+    firebaseFirestore
         .collection("Attendence")
         .doc(data['uid'])
+        .collection(current.toString())
+        .doc('check-in')
         .set(attendanceModel.toMap());
     print('data uploaded');
     Get.snackbar('Alert', 'Attendence Taken Succesfully',
