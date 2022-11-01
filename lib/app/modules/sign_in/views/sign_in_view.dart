@@ -58,7 +58,7 @@ class SignInView extends GetView<SignInController> {
                                 hintText: 'Enter your  e-mail',
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2,
+                                        width: 3,
                                         color:
                                             Color.fromARGB(255, 127, 127, 129)),
                                     borderRadius: BorderRadius.circular(10)),
@@ -103,7 +103,7 @@ class SignInView extends GetView<SignInController> {
                                     borderRadius: BorderRadius.circular(10)),
                                 focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        width: 2,
+                                        width: 3,
                                         color:
                                             Color.fromARGB(255, 127, 127, 129)),
                                     borderRadius: BorderRadius.circular(10)),

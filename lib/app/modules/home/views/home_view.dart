@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../attendance/views/attendance_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -212,13 +211,15 @@ class HomeView extends GetView<HomeController> {
                               onPressed: _homeController.isLoading.value
                                   ? null
                                   : () async {
-                                      await _homeController.uploadFile();
-                                      var s = await _attcont.getLocation();
-                                      Get.to(AttendanceView(
-                                        image: dataq,
-                                        address: s,
-                                        allData: data,
-                                      ));
+                                      await _homeController.nextPage(
+                                          data, dataq);
+                                      // await _homeController.uploadFile();
+                                      // var s = await _attcont.getLocation();
+                                      // Get.to(AttendanceView(
+                                      //   image: dataq,
+                                      //   address: s,
+                                      //   allData: data,
+                                      // ));
                                       // Get.to(attend(
                                       //   images: images2,
                                       // ));

@@ -74,37 +74,42 @@ class AttendanceView extends GetView<AttendanceController> {
               //     },
               //     child: Text('match')),
 
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                child: InkWell(
-                    onTap: () async {
-                      await _attendaceController.checkImages(image);
-                    },
-                    child: Card(
-                      color: Color.fromARGB(255, 45, 47, 51),
-                      elevation: 20,
-                      child: ListTile(
-                        title: Text(
-                          'Check-Image',
-                          style: GoogleFonts.ubuntu(
-                              fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 204, 208, 210)),
+              Obx(() {
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  child: InkWell(
+                      onTap: () async {
+                        await _attendaceController.checkImages(image);
+                      },
+                      child: Card(
+                        color: Color.fromARGB(255, 45, 47, 51),
+                        elevation: 20,
+                        child: ListTile(
+                          title: Text(
+                            'Check-Image',
+                            style: GoogleFonts.ubuntu(
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 204, 208, 210)),
+                          ),
+                          leading: Icon(
+                            Icons.image,
+                            color: Color.fromARGB(255, 204, 208, 210),
+                          ),
+                          trailing: !(_attendaceController.newLoad.value)
+                              ? GetBuilder<AttendanceController>(
+                                  builder: (cosdfsdfntext) {
+                                  return Icon(
+                                    Icons.check,
+                                    color: (_attendaceController.col1),
+                                    size: 30,
+                                  );
+                                })
+                              : CircularProgressIndicator(
+                                  color: Color.fromARGB(255, 204, 208, 210)),
                         ),
-                        leading: Icon(
-                          Icons.image,
-                          color: Color.fromARGB(255, 204, 208, 210),
-                        ),
-                        trailing: GetBuilder<AttendanceController>(
-                            builder: (cosdfsdfntext) {
-                          return Icon(
-                            Icons.check,
-                            color: (_attendaceController.col1),
-                            size: 30,
-                          );
-                        }),
-                      ),
-                    )),
-              ),
+                      )),
+                );
+              }),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: InkWell(
@@ -145,44 +150,56 @@ class AttendanceView extends GetView<AttendanceController> {
               ),
               SizedBox(height: 20),
 
-              Padding(
-                padding: const EdgeInsets.only(top: 30.0),
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(250, 50)),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      )),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 65, 86, 94),
+              Obx(() {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30.0),
+                  child: ElevatedButton.icon(
+                      icon: _attendaceController.isLoading.value
+                          ? CircularProgressIndicator(
+                              color: Color.fromARGB(255, 171, 180, 184))
+                          : Icon(Icons.file_upload_outlined),
+                      style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.all(Size(250, 50)),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        )),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          Color.fromARGB(255, 65, 86, 94),
+                        ),
                       ),
-                    ),
-                    onPressed: () async {
-                      if (_attendaceController.col1 !=
-                          Color.fromARGB(255, 15, 211, 35)) {
-                        Get.snackbar(
-                            'Error', 'Upload your photo or Photo doesnt match',
-                            backgroundColor: Colors.red);
-                      } else if ((_attendaceController.scannedQrcode == '-1') ||
-                          (_attendaceController.scannedQrcode == '')) {
-                        Get.snackbar('Error', 'Qr data not scanned',
-                            backgroundColor: Colors.red);
-                      } else {
-                        await _attendaceController.takeAttendandce(
-                            allData, context);
-                      }
+                      onPressed: _attendaceController.isLoading.value
+                          ? null
+                          : () async {
+                              if (_attendaceController.col1 !=
+                                  Color.fromARGB(255, 15, 211, 35)) {
+                                Get.snackbar('Error',
+                                    'Upload your photo or Photo doesnt match',
+                                    backgroundColor: Colors.red);
+                              } else if ((_attendaceController.scannedQrcode ==
+                                      '-1') ||
+                                  (_attendaceController.scannedQrcode == '')) {
+                                Get.snackbar('Error', 'Qr data not scanned',
+                                    backgroundColor: Colors.red);
+                              } else {
+                                await _attendaceController.takeAttendandce(
+                                    allData, context);
+                              }
 
-                      // Get.to(attend(
-                      //   images: images2,
-                      // ));
-                    },
-                    child: Text(
-                      'Submit',
-                      style:
-                          GoogleFonts.ubuntu(color: Colors.white, fontSize: 20),
-                    )),
-              )
+                              // Get.to(attend(
+                              //   images: images2,
+                              // ));
+                            },
+                      label: Text(
+                        _attendaceController.isLoading.value
+                            ? 'Submitting'
+                            : 'Submit',
+                        style: GoogleFonts.ubuntu(
+                            color: Colors.white, fontSize: 20),
+                      )),
+                );
+              })
               // Text(
               //     ' ${address.subAdminArea},${address.addressLine}, ${address.featureName},${address.thoroughfare}, ${address.subThoroughfare}'),
               // SizedBox(height: 20),

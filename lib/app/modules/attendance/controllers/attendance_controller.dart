@@ -34,7 +34,7 @@ class AttendanceController extends GetxController {
   File? image;
   String img = '';
   pickimage() async {
-    final pimage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pimage = await ImagePicker().pickImage(source: ImageSource.camera);
     if (pimage == null) {
       return;
     } else {
@@ -46,7 +46,7 @@ class AttendanceController extends GetxController {
     update();
   }
 
-  String scannedQrcode = 'sdfg';
+  String scannedQrcode = '';
   clearQr() {
     scannedQrcode = '';
     update();
@@ -129,9 +129,11 @@ class AttendanceController extends GetxController {
   var baseUrl = 'https://face-verification2.p.rapidapi.com/faceverification';
   List<ResponseModel> latestResponse = [];
   ResponseModel? latestResponse2;
+  var newLoad = false.obs;
 
   Future<void> checkImages(String img2) async {
     try {
+      newLoad.value = true;
       final ImageModel imageModel = ImageModel(
           image1Base64: 'data:image/jpeg;base64,$img',
           image2Base64: 'data:image/jpeg;base64,$img2');
@@ -150,10 +152,17 @@ class AttendanceController extends GetxController {
       latestResponse2 = responseModelFromJson(request.body);
       latestResponse.add(latestResponse2!);
       log(latestResponse2!.data.toString());
+      newLoad.value = false;
+      update();
     } catch (e) {
       log(e.toString());
     }
-    if (latestResponse2!.data!.similarPercent != 0) {
+    if (latestResponse2!.data == null) {
+      Get.snackbar("Error", 'Please upload photo',
+          backgroundColor: Color.fromARGB(255, 211, 15, 15));
+      col1 = Color.fromARGB(255, 93, 92, 92);
+    } else if (latestResponse2!.data!.similarPercent != 0) {
+      Get.snackbar("Success", 'Photo matches ', backgroundColor: Colors.green);
       col1 = Color.fromARGB(255, 15, 211, 35);
     } else {
       Get.snackbar("Error", 'Photo does not match',
@@ -163,7 +172,9 @@ class AttendanceController extends GetxController {
     update();
   }
 
+  var isLoading = false.obs;
   takeAttendandce(data, context) async {
+    isLoading.value = true;
     var l2 = locationData!.latitude;
     var l1 = locationData!.longitude;
     var loc = ("latitude: $l1,longitude:$l2");
@@ -188,6 +199,7 @@ class AttendanceController extends GetxController {
         .doc('check-in')
         .set(attendanceModel.toMap());
     print('data uploaded');
+    isLoading = false.obs;
     Get.snackbar('Alert', 'Attendence Taken Succesfully',
         snackPosition: SnackPosition.TOP, backgroundColor: Colors.green);
     await afterFunct();

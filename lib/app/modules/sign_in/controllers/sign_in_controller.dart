@@ -1,3 +1,4 @@
+import 'package:facial_app_firebase/app/modules/authenticator/views/authenticator_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,7 @@ class SignInController extends GetxController {
           backgroundColor: Colors.red, colorText: Colors.white);
     }
     isLoading.value = false;
+    Get.off(AuthenticatorView());
     // if (user != null) {
     //   Get.off(HomeView());
     // }
