@@ -61,7 +61,7 @@ class SignUpView extends GetView<SignUpController> {
                               ),
                               child: _signUpController.img.trim().isNotEmpty
                                   ? CircleAvatar(
-                                      backgroundImage: MemoryImage(
+                                      backgroundImage: Image.memory(
                                         const Base64Decoder()
                                             .convert(_signUpController.img),
                                       ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:image/image.dart' as img;
 import 'package:google_fonts/google_fonts.dart';
 import '../controllers/attendance_controller.dart';
 
@@ -48,7 +49,7 @@ class AttendanceView extends GetView<AttendanceController> {
                           ),
                           child: _attendaceController.img.trim().isNotEmpty
                               ? CircleAvatar(
-                                  backgroundImage: MemoryImage(
+                                  backgroundImage: Image.memory(
                                     const Base64Decoder()
                                         .convert(_attendaceController.img),
                                   ),
