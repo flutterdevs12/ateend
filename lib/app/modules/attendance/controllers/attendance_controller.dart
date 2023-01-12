@@ -34,7 +34,7 @@ class AttendanceController extends GetxController {
   File? image;
   String img = '';
   pickimage() async {
-    final pimage = await ImagePicker().pickImage(source: ImageSource.camera);
+    final pimage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pimage == null) {
       return;
     } else {

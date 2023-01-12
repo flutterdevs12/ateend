@@ -61,7 +61,7 @@ class SignUpView extends GetView<SignUpController> {
                               ),
                               child: _signUpController.img.trim().isNotEmpty
                                   ? CircleAvatar(
-                                      backgroundImage: Image.memory(
+                                      backgroundImage: MemoryImage(
                                         const Base64Decoder()
                                             .convert(_signUpController.img),
                                       ),
@@ -238,10 +238,18 @@ class SignUpView extends GetView<SignUpController> {
                             ? null
                             : () async {
                                 await _signUpController.signUp(
-                                    _signUpController
-                                        .emailEditingController.text,
-                                    _signUpController.passwordController.text,
-                                    context);
+                                    email: _signUpController
+                                        .emailEditingController.text
+                                        .toString(),
+                                    password: _signUpController
+                                        .passwordController.text
+                                        .toString(),
+                                    mobileNumber: _signUpController
+                                        .numberController.text
+                                        .toString(),
+                                    name: _signUpController
+                                        .firstNameEditingController.text
+                                        .toString());
                                 // await AttendanceController().getUserLocation();
                               },
                         label: Text(

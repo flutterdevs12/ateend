@@ -49,7 +49,7 @@ class AttendanceView extends GetView<AttendanceController> {
                           ),
                           child: _attendaceController.img.trim().isNotEmpty
                               ? CircleAvatar(
-                                  backgroundImage: Image.memory(
+                                  backgroundImage: MemoryImage(
                                     const Base64Decoder()
                                         .convert(_attendaceController.img),
                                   ),

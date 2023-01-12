@@ -83,7 +83,7 @@ class HomeView extends GetView<HomeController> {
                         backgroundColor: Colors.white,
                         radius: 74,
                         child: CircleAvatar(
-                          backgroundImage: Image.memory(images2),
+                          backgroundImage: MemoryImage(images2),
                           radius: 70,
                         ),
                       ),
